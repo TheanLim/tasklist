@@ -2,6 +2,7 @@
 const nextConfig = {
     output: "export",
     basePath: "/tasklist",
+    assetPrefix: '/tasklist/',
     images: {
         unoptimized: true,
     },
