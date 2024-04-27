@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Page Not Found &middot; your-website-name</title>
+  </head>
+  <body>
+    <script>
+      const url = window.location.href;
+      const is404 = url.includes('/404.html');
+      if (!is404) {
+        window.location.href = '/your-repository-name' + window.location.pathname;
+      }
+    </script>
+  </body>
+</html>
