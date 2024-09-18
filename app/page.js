@@ -57,7 +57,6 @@ const Home = () => {
 
   return (
     <div className=' to-primary'>
-      <div>{searchQuery}</div>
       {/* Tag buttons */}
       <div className='flex gap-1 m-2'>
         <button className={`btn ${selectedTag === null ? 'btn-primary' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedTag(null)}>All</button>
