@@ -1,3 +1,7 @@
+You can find the website at https://theanlim.github.io/tasklist/
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -20,17 +24,46 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Deploying to Github Pages
+### Activate GitHub Pages for Your Repository
+Navigate to the Settings tab, select Pages from the left-hand menu, and locate the dropdown for the deployment Source. Change the Source to GitHub Actions.
 
-To learn more about Next.js, take a look at the following resources:
+### Configure the Next.js Build Process
+To deploy a Next.js app on GitHub Pages, you need to change the build output to generate static files, as GitHub Pages only supports static hosting (HTML, CSS, JavaScript). By default, Next.js uses Node.js, which is incompatible with GitHub Pages. To resolve this, modify next.config.js by setting the output option to "export":
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: "export",  // <=== enables static exports
+  reactStrictMode: true,
+};
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+module.exports = nextConfig;
+```
 
-## Deploy on Vercel
+After running next build, Next.js will generate an out folder containing static assets, which you can then upload to GitHub Pages.  
+Undo this change for local development.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Configure Base Path
+By default, Next.js maps all static assets the domain (e.x., https://theanlim.github.io/). But Github assigned a dedicated subdomain for this repository Github Pages (e.x., https://theanlim.github.io/tasklist/). This leads to a mismatch of the base path.  
+To fix this, we can set up a path prefix by adding basePath inside the next.config.js file:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  basePath: "/tasklist",  // <=== configure base path
+  output: "export",
+  reactStrictMode: true,
+};
+
+module.exports = nextConfig;
+```
+Undo this change for local development.
+
+### Configure Github Actions
+Add a [Github Workflow yml](.github/workflows/nextjs.yml) to publish the application to Github Pages.
+
+### 404.html
+Add a [404.html](/public/404.html) - This is needed when deploying Next.js to GitHub Pages because GitHub Pages is designed to host static files, while Next.js uses Node.js to run the application. 
+Undo this change for local development.
+
