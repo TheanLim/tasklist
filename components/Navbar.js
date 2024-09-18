@@ -1,5 +1,6 @@
 'use client'
 import React from 'react'
+import Searchbar from './Searchbar'
 
 const Navbar = () => {
   return (
@@ -21,9 +22,10 @@ const Navbar = () => {
         </div>
         <div className="navbar-end">
             {/* Search Bar */}
-            <div className="form-control mr-4">
+            {/* <div className="form-control mr-4">
                 <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
-            </div>
+            </div> */}
+            <Searchbar/>
 
             {/* Light vs Dark Mode */}
             <label className="swap swap-rotate">      

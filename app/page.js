@@ -1,9 +1,11 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Task from '../components/Task'
 import TaskInputModal from '../components/TaskInputModal';
+import { SearchContext } from '@/context/SearchContext';
 
 const Home = () => {
+  const { searchQuery } = useContext(SearchContext);
   const [tasks, setTasks] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -40,13 +42,22 @@ const Home = () => {
     ? tasks.filter(task => task.tags.includes(selectedTag))
     : tasks;
 
-  // Function to filter tasks based on selected tag
+  // Function to filter tasks based on selected status
   filteredTasks = selectedStatus
   ? filteredTasks.filter(task => task.status === selectedStatus)
   : filteredTasks;
 
+  // Filter tasks using task title/details based on the searchQuery
+  // Consider here next time: https://github.com/TheanLim/mock-stackoverflow/blob/main/server/utils/question.js#L79
+  if (searchQuery!= ""){
+    filteredTasks = filteredTasks.filter(
+      task => task.title.includes(searchQuery) || task.details.includes(searchQuery)
+    )
+  }
+
   return (
     <div className=' to-primary'>
+      <div>{searchQuery}</div>
       {/* Tag buttons */}
       <div className='flex gap-1 m-2'>
         <button className={`btn ${selectedTag === null ? 'btn-primary' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedTag(null)}>All</button>
