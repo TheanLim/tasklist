@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import TaskListApp from "@/components/TaskListApp";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,10 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar/>
-        <main className="pt-16">
-          {children}
-        </main>
+        <TaskListApp children={children} />
       </body>
     </html>
   );
