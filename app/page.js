@@ -38,6 +38,8 @@ const Home = () => {
     updateTasks([...unaffectedTasks, editOrNewTask]);
   }
 
+
+  ///// FILTER TASKS ///////
   // Function to filter tasks based on selected tag
   let filteredTasks = selectedTag
     ? tasks.filter(task => task.tags.includes(selectedTag))
@@ -52,6 +54,12 @@ const Home = () => {
   if (searchQuery !== "") {
     filteredTasks = search(searchQuery, filteredTasks);
   }
+  ///// END FILTER TASKS ///////
+  // Calculate the counts for each status
+  const totalCount = tasks.length;
+  const pendingCount = tasks.filter(task => task.status === 'pending').length;
+  const completedCount = tasks.filter(task => task.status === 'completed').length;
+
 
   return (
     <div className=' to-primary'>
@@ -81,9 +89,9 @@ const Home = () => {
 
       {/* Status buttons */}
       <div className='flex gap-1 m-2'>
-        <button className={`btn ${selectedStatus === null ? 'btn-accent' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedStatus(null)}>All</button>
-        <button className={`btn ${selectedStatus === 'pending' ? 'btn-accent' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedStatus('pending')}>Pending</button>
-        <button className={`btn ${selectedStatus === 'completed' ? 'btn-accent' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedStatus('completed')}>Completed</button>
+        <button className={`btn ${selectedStatus === null ? 'btn-accent' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedStatus(null)}>All ({totalCount})</button>
+        <button className={`btn ${selectedStatus === 'pending' ? 'btn-accent' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedStatus('pending')}>Pending ({pendingCount})</button>
+        <button className={`btn ${selectedStatus === 'completed' ? 'btn-accent' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedStatus('completed')}>Completed ({completedCount})</button>
       </div>
 
       <button className='btn btn-sm btn-error m-2'
