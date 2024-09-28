@@ -42,7 +42,7 @@ const Home = () => {
   ///// FILTER TASKS ///////
   // Function to filter tasks based on selected tag
   let filteredTasks = selectedTag
-    ? tasks.filter(task => task.tags.includes(selectedTag))
+    ? tasks.filter(task => task.tags?.includes(selectedTag))
     : tasks;
 
   // Function to filter tasks based on selected status
@@ -68,6 +68,7 @@ const Home = () => {
         <button className={`btn ${selectedTag === null ? 'btn-primary' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedTag(null)}>All</button>
         {Object.entries(
           filteredTasks
+            .filter(task => task.tags && task.tags.length > 0)
             .flatMap(task => task.tags)
             .reduce((tagCounts, tag) => {
               tagCounts[tag] = (tagCounts[tag] || 0) + 1;
