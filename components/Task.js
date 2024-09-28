@@ -1,6 +1,6 @@
 import TaskInputModal from './TaskInputModal';
 
-const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, handleDelete, handleClickTag, handleEditTask, isOpen }) => {
+const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTag, handleDelete, handleClickTag, handleEditTask, isOpen }) => {
 
   const toggleStrikethrough = () => {
     const newStatus = taskStatus === 'pending' ? 'completed' : 'pending';
@@ -41,7 +41,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, handleDele
 
         <div className='flex gap-2'>
           {taskTags && taskTags.length > 0 && taskTags.map(tag => (
-            <button className="btn btn-primary btn-sm" key={tag} onClick={() => handleClickTag(tag)}>{tag}</button>
+            <button className="btn btn-primary btn-sm" key={tag} onClick={() => handleClickTag(selectedTag === tag ? null : tag)}>{tag}</button>
           ))}
         </div>
       </div>

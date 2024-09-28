@@ -115,6 +115,7 @@ const Home = () => {
             taskDetails={task.details}
             taskTags={task.tags}
             taskStatus={task.status}
+            selectedTag={selectedTag}
             handleDelete={deleteTasks}
             handleClickTag={setSelectedTag}
             handleEditTask={handleEditOrNewTask}
