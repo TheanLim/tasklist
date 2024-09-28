@@ -1,51 +1,50 @@
-import {useState} from 'react'
-import TaskInputModal from './TaskInputModal'
+import TaskInputModal from './TaskInputModal';
 
-const Task = ({taskId, taskTitle, taskDetails, taskTags, taskStatus, handleDelete, handleClickTag, handleEditTask}) => {
+const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, handleDelete, handleClickTag, handleEditTask, isOpen }) => {
 
   const toggleStrikethrough = () => {
     const newStatus = taskStatus === 'pending' ? 'completed' : 'pending';
     handleEditTask({
-      id:taskId,
-      title:taskTitle,
-      details:taskDetails,
-      tags:taskTags,
+      id: taskId,
+      title: taskTitle,
+      details: taskDetails,
+      tags: taskTags,
       status: newStatus
     });
   };
   return (
     <div className='collapse collapse-plus bg-base-200 text-base-content' onDoubleClick={toggleStrikethrough}>
-        <input type="radio" name="my-accordion-3" defaultChecked /> 
-        <div className={`collapse-title text-xl font-medium font-mono ${taskStatus==='completed' ? 'line-through' : ''}`}>
-            {taskTitle}
+      <input type="radio" name="my-accordion-3" defaultChecked={isOpen} />
+      <div className={`collapse-title text-xl font-medium font-mono ${taskStatus === 'completed' ? 'line-through' : ''}`}>
+        {taskTitle}
+      </div>
+      <div className="collapse-content">
+        <div className='flex'>
+          <div className='grow'>{taskDetails}</div>
+          <div className='editNDelete flex flex-col items-center'>
+            <TaskInputModal
+              btnTxt={'EDIT'}
+              taskId={taskId}
+              taskTitle={taskTitle}
+              taskDetails={taskDetails}
+              taskTags={taskTags}
+              taskStatus={taskStatus}
+              handleEditTask={handleEditTask} />
+            <button
+              onClick={() => handleDelete([taskId])}
+              className="btn btn-circle btn-outline btn-sm btn-error my-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
         </div>
-        <div className="collapse-content"> 
-            <div className='flex'>
-              <div className='grow'>{taskDetails}</div>
-              <div className='editNDelete flex flex-col items-center'>
-                <TaskInputModal 
-                  btnTxt={'EDIT'} 
-                  taskId={taskId} 
-                  taskTitle={taskTitle} 
-                  taskDetails={taskDetails} 
-                  taskTags={taskTags} 
-                  taskStatus={taskStatus}
-                  handleEditTask={handleEditTask}/>
-                <button 
-                  onClick={()=>handleDelete([taskId])}
-                  className="btn btn-circle btn-outline btn-sm btn-error my-2"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-                </div>
-            </div>
-            
-            <div className='flex gap-2'>
-                {taskTags && taskTags.length >0 && taskTags.map(tag => (
-                    <button className="btn btn-primary btn-sm" key={tag} onClick={() => handleClickTag(tag)}>{tag}</button>
-                ))}
-            </div>
+
+        <div className='flex gap-2'>
+          {taskTags && taskTags.length > 0 && taskTags.map(tag => (
+            <button className="btn btn-primary btn-sm" key={tag} onClick={() => handleClickTag(tag)}>{tag}</button>
+          ))}
         </div>
+      </div>
     </div>
   )
 }

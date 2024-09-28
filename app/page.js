@@ -169,7 +169,7 @@ const Home = () => {
         <div className='ml-auto sticky top-2 right-0 z-10'>
           <TaskInputModal btnTxt={'NEW TASK'} handleEditTask={handleEditOrNewTask} />
         </div>
-        {filteredTasks.map(task => (
+        {filteredTasks.map((task, index) => (
           <Task
             key={task.id}
             taskId={task.id}
@@ -180,6 +180,7 @@ const Home = () => {
             handleDelete={deleteTasks}
             handleClickTag={setSelectedTag}
             handleEditTask={handleEditOrNewTask}
+            isOpen={index === filteredTasks.length - 1} // Open only for the last item
           />
         ))}
       </div>
