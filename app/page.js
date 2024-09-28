@@ -56,9 +56,9 @@ const Home = () => {
   }
   ///// END FILTER TASKS ///////
   // Calculate the counts for each status
-  const totalCount = tasks.length;
-  const pendingCount = tasks.filter(task => task.status === 'pending').length;
-  const completedCount = tasks.filter(task => task.status === 'completed').length;
+  const totalCount = filteredTasks.length;
+  const pendingCount = filteredTasks.filter(task => task.status === 'pending').length;
+  const completedCount = filteredTasks.filter(task => task.status === 'completed').length;
 
 
   return (
