@@ -45,20 +45,22 @@ const Home = () => {
     ? tasks.filter(task => task.tags?.includes(selectedTag))
     : tasks;
 
-  // Function to filter tasks based on selected status
-  filteredTasks = selectedStatus
-    ? filteredTasks.filter(task => task.status === selectedStatus)
-    : filteredTasks;
-
   // Filter tasks using task title/details/tags based on the searchQuery
   if (searchQuery !== "") {
     filteredTasks = search(searchQuery, filteredTasks);
   }
-  ///// END FILTER TASKS ///////
+
   // Calculate the counts for each status
   const totalCount = filteredTasks.length;
   const pendingCount = filteredTasks.filter(task => task.status === 'pending').length;
   const completedCount = filteredTasks.filter(task => task.status === 'completed').length;
+
+  // Function to filter tasks based on selected status
+  filteredTasks = selectedStatus
+    ? filteredTasks.filter(task => task.status === selectedStatus)
+    : filteredTasks;
+  ///// END FILTER TASKS ///////
+
 
 
   return (
