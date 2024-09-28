@@ -25,6 +25,13 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setEditedTask({
+            id: innerTaskId,
+            title: "",
+            details: "",
+            tags: [],
+            status: innerTaskStatus
+        });
         handleEditTask(editedTask); // Call the edit task handler with the current edited task
     };
 
