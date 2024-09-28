@@ -130,7 +130,7 @@ const Home = () => {
       <div className='flex gap-1 m-2'>
         <button className={`btn ${selectedTag === null ? 'btn-primary' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedTag(null)}>All</button>
         {Object.entries(
-          tasks
+          filteredTasks
             .flatMap(task => task.tags)
             .reduce((tagCounts, tag) => {
               tagCounts[tag] = (tagCounts[tag] || 0) + 1;
