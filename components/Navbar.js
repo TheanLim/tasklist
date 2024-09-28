@@ -17,7 +17,7 @@ const Navbar = () => {
                 </div>
             </div>
             <div className="navbar-center">
-                <a className="btn btn-ghost text-xl">Task List</a>
+                <a className="text-2xl font-semibold">Task List</a>
             </div>
             <div className="navbar-end">
                 {/* Search Bar */}
