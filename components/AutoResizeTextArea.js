@@ -22,7 +22,7 @@ const AutoResizeTextArea = ({ value, onChange, placeholder, onKeyDown, maxHeight
             placeholder={placeholder}
             onKeyDown={onKeyDown}
             className="textarea textarea-sm textarea-bordered w-full resize-y" // Allow vertical resizing
-            style={{ overflow: 'hidden' }}
+            style={{ overflow: 'auto' }}
         />
     );
 };
