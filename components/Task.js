@@ -1,3 +1,4 @@
+import Markdown from 'markdown-to-jsx'; // Importing markdown-to-jsx
 import TaskInputModal from './TaskInputModal';
 
 const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTag, handleDelete, handleClickTag, handleEditTask, isOpen }) => {
@@ -20,8 +21,10 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
       </div>
       <div className="collapse-content">
         <div className='flex'>
-          <div className='grow'>{taskDetails}</div>
-          <div className='editNDelete flex flex-col items-center'>
+          <div className='grow prose'>
+            <Markdown>{taskDetails}</Markdown>
+          </div>
+          <div className='ml-auto editNDelete flex flex-col items-center'>
             <TaskInputModal
               btnTxt={'EDIT'}
               taskId={taskId}
