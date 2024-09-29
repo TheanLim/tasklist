@@ -37,13 +37,6 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
     const handleSubmit = (e) => {
         e.preventDefault();
         handleEditTask(editedTask);
-        setEditedTask({
-            id: innerTaskId,
-            title: "",
-            details: "",
-            tags: [],
-            status: innerTaskStatus
-        });
         closeModal();
     };
 
