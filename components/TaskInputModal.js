@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
+import AutoResizeTextArea from './AutoResizeTextArea';
 
 const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, taskStatus, handleEditTask }) => {
     const innerTaskId = taskId ? taskId : new Date().getTime();
     const innerTaskStatus = taskStatus ? taskStatus : 'pending';
 
-    // State to hold the task being edited
     const [editedTask, setEditedTask] = useState({
         id: innerTaskId,
         title: taskTitle || "",
@@ -13,7 +13,6 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
         status: innerTaskStatus
     });
 
-    // useEffect to update the state when editing a task
     useEffect(() => {
         setEditedTask({
             id: innerTaskId,
@@ -22,7 +21,7 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
             tags: taskTags || [],
             status: innerTaskStatus
         });
-    }, [taskId, taskTitle, taskDetails, taskTags, taskStatus]); // Runs when task properties change
+    }, [taskId, taskTitle, taskDetails, taskTags, taskStatus]);
 
     const closeModal = () => {
         document.getElementById(innerTaskId).close();
@@ -37,8 +36,7 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handleEditTask(editedTask); // Call the edit task handler with the current edited task
-        // Reset the form after submission
+        handleEditTask(editedTask);
         setEditedTask({
             id: innerTaskId,
             title: "",
@@ -60,24 +58,23 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
                     <h3 className="font-bold text-lg">{taskTitle ? "Edit your task" : "Add a new task"}</h3>
                     <div className="modal-action">
                         <form method="dialog" className='space' onSubmit={handleSubmit}>
-                            <textarea
+                            <AutoResizeTextArea
                                 value={editedTask.title}
-                                placeholder='Task title'
                                 onChange={(e) => setEditedTask({ ...editedTask, title: e.target.value })}
-                                required
-                                className="textarea textarea-sm textarea-bordered w-full"
+                                placeholder='Task title'
                                 onKeyDown={handleKeyDown}
+                                maxHeight={200}
                             />
-                            <textarea
+                            <AutoResizeTextArea
                                 value={editedTask.details}
-                                placeholder='Task details (use - for lists)'
                                 onChange={(e) => setEditedTask({ ...editedTask, details: e.target.value })}
-                                className="textarea textarea-sm textarea-bordered w-full"
+                                placeholder='Task details'
                                 onKeyDown={handleKeyDown}
+                                maxHeight={200}
                             />
                             <input
                                 type="text"
-                                value={editedTask.tags.join(', ')} // Join tags to show them in the input
+                                value={editedTask.tags.join(', ')}
                                 placeholder='Tags (comma-separated)'
                                 onChange={(e) => setEditedTask({ ...editedTask, tags: e.target.value.split(',').map(tag => tag.trim()) })}
                                 className="input input-sm input-bordered w-full"
