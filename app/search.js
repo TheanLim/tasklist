@@ -1,3 +1,31 @@
+/**
+ * Searches through a list of tasks based on the provided query string.
+ *
+ * The query string can contain:
+ * - Include tags: specified as [tag] to include tasks with those tags.
+ * - Exclude tags: specified as -[tag] to exclude tasks with those tags. 
+ *   Tasks containing any of the excluded tags will be filtered out.
+ * - Keywords: words outside of brackets will be searched in the task titles and details.
+ * - Exact phrases: enclosed in quotes ("") to match exact text in titles and details.
+ *
+ * The search results are ranked based on the number of matches:
+ * - AND matches: Tasks that contain all keywords and tags specified in the query are prioritized.
+ * - OR matches: Tasks that contain at least one keyword or tag are included but ranked lower.
+ * 
+ * If excluded tags are specified, tasks containing those tags will be excluded from the results.
+ * If both included tags and other search keywords are present, tasks can match any of the included tags 
+ * or keywords (OR logic), but tasks that match all specified keywords and tags (AND logic) will be ranked higher.
+ * 
+ * If only exclude tags are provided and none match any tasks, all tasks are returned.
+ * If both include and exclude tags are provided, tasks that match the include tags
+ * while not matching any exclude tags will be returned.
+ *
+ * @param {string} searchQuery - The query string used to filter tasks.
+ * @param {Array<Object>} tasks - The list of tasks to be filtered. Each task should have
+ *        properties such as title, details, and tags.
+ * @returns {Array<Object>} - The filtered and ranked list of tasks that match the search criteria.
+ */
+
 const search = (searchQuery, tasks) => {
     let lowerCaseQuery = searchQuery.toLowerCase();
 
@@ -21,6 +49,15 @@ const search = (searchQuery, tasks) => {
     // Initialize arrays for AND matches and OR matches with ranking
     let andMatches = [];
     let orMatches = [];
+
+    // If the only condition is to exclude tags, such as -[tag]
+    // Need to handle differently by including all tasks first, and then
+    // remove tasks with tags.
+    if (includeTags.length === 0 && exactKeywords.length === 0 && normalKeywords.length === 0 && includeTags.length === 0 && excludeTags.length > 0) {
+        return tasks.filter(task =>
+            !task.tags?.some(tag => excludeTags.includes(tag.toLowerCase()))
+        ); // Return tasks that do not have any exclude tags
+    }
 
     // Filter tasks
     tasks.forEach(task => {
