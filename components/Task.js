@@ -43,7 +43,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
       </div>
       <div className="collapse-content">
         <div className='flex'>
-          <div className='grow prose'>
+          <div className='grow prose leading-tight'>
             <Markdown>{taskDetails}</Markdown>
           </div>
           <div className='ml-auto editNDelete flex flex-col items-center'>
