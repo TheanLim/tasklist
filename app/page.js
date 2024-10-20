@@ -107,7 +107,7 @@ const Home = () => {
       {/* Task list */}
       <div className='flex items-center justify-center flex-wrap min-w-[18rem] max-w-4xl gap-2 p-4 mx-auto'>
         <div className='ml-auto sticky top-2 right-0 z-10'>
-          <TaskInputModal btnTxt={'NEW TASK'} handleEditTask={handleEditOrNewTask} />
+          <TaskInputModal taskId={new Date().getTime()} btnTxt={'NEW TASK'} handleEditTask={handleEditOrNewTask} />
         </div>
         {filteredTasks.map((task, index) => (
           <Task
