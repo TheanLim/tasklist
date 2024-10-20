@@ -8,6 +8,13 @@ const Searchbar = () => {
   const inputRef = useRef(null); // Create a ref for the input field
 
   const handleInputChange = (e) => {
+    // When users clean up the search, show every tasks
+    if (e.target.value === "") {
+      setInput('');
+      setSearchQuery('');
+      setIsDropdownVisible(false); // Hide dropdown after searching
+      return;
+    }
     setInput(e.target.value);
     setIsDropdownVisible(true); // Show dropdown when input changes
   };
