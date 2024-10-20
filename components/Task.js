@@ -13,8 +13,30 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
       status: newStatus
     });
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'r') {
+      // Simply refresh and move it down
+      handleEditTask({
+        id: taskId,
+        title: taskTitle,
+        details: taskDetails,
+        tags: taskTags,
+        status: taskStatus
+      });
+    }
+    if (e.key === 'c') {
+      // complete a task
+      toggleStrikethrough();
+    }
+  };
+
   return (
-    <div className='collapse collapse-plus bg-base-200 text-base-content' onDoubleClick={toggleStrikethrough}>
+    <div
+      className='collapse collapse-plus bg-base-200 text-base-content'
+      onDoubleClick={toggleStrikethrough}
+      onKeyDown={handleKeyDown}
+    >
       <input type="radio" name="my-accordion-3" defaultChecked={isOpen} />
       <div className={`collapse-title text-xl font-medium font-mono ${taskStatus === 'completed' ? 'line-through' : ''}`}>
         {taskTitle}
