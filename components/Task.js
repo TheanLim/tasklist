@@ -46,7 +46,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
           <div className='grow prose leading-tight'>
             <Markdown>{taskDetails}</Markdown>
           </div>
-          <div className='ml-auto editNDelete flex flex-col items-center'>
+          <div className='ml-auto flex flex-col items-center'>
             <TaskInputModal
               btnTxt={'EDIT'}
               taskId={taskId}
