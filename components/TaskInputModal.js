@@ -36,8 +36,26 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        handleEditTask(editedTask);
+        // Remove any empty tags
+        const cleanTags = editedTask.tags.filter(tag => tag);
+        handleEditTask({ ...editedTask, tags: cleanTags });
         closeModal();
+    };
+
+    function trimWithTrailingSpace(str) {
+        // Trim leading and trailing spaces; don't allow tags with empty spaces
+        const trimmed = str.trimStart().trimEnd();
+        const hasTrailingSpace = str.endsWith(' ');
+        // If there was a trailing space, add it back
+        // But only allow one empty space as a delimiter
+        return hasTrailingSpace ? trimmed + ' ' : trimmed;
+    }
+
+    // Return an array of tags
+    const processTagsInput = (input) => {
+        // Doesn't allow starting empty string
+        if (!input || input[0] === " ") return [];
+        return trimWithTrailingSpace(input).split(' ')
     };
 
     return (
@@ -67,9 +85,9 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
                             />
                             <input
                                 type="text"
-                                value={editedTask.tags.join(', ')}
-                                placeholder='Tags (comma-separated)'
-                                onChange={(e) => setEditedTask({ ...editedTask, tags: e.target.value.split(',').map(tag => tag.trim()) })}
+                                value={editedTask.tags.join(' ')}
+                                placeholder='Tags (space-separated)'
+                                onChange={(e) => setEditedTask({ ...editedTask, tags: processTagsInput(e.target.value) })}
                                 className="input input-sm input-bordered w-full"
                                 onKeyDown={handleKeyDown}
                             />

@@ -44,7 +44,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
 
         <div className='flex gap-2'>
           {taskTags && taskTags.length > 0 && taskTags.map(tag => (
-            <button className="btn btn-primary btn-sm" key={tag} onClick={() => handleClickTag(selectedTag === tag ? null : tag)}>{tag}</button>
+            <button className="btn border-indigo-500 btn-xs rounded-full" key={tag} onClick={() => handleClickTag(selectedTag === tag ? null : tag)}>{tag}</button>
           ))}
         </div>
       </div>
