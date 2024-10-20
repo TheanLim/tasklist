@@ -1,7 +1,22 @@
 'use client'
-import Searchbar from './Searchbar'
+import { useEffect, useState } from 'react';
+import Searchbar from './Searchbar';
 
 const Navbar = () => {
+    const [theme, setTheme] = useState('light');
+
+    const handleToggle = () => {
+        setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light')
+        localStorage.setItem('theme', theme);
+    };
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme') ?? "light"
+        setTheme(savedTheme)
+        document.querySelector('html')?.setAttribute('data-theme', theme);
+    }, [theme])
+
+
     return (
         <div className="navbar bg-base-100 text-base-content fixed z-50">
             <div className="navbar-start">
@@ -27,7 +42,7 @@ const Navbar = () => {
                 <Searchbar />
 
                 {/* Light vs Dark Mode */}
-                <label className="swap swap-rotate">
+                <label className={`rounded-full swap swap-rotate ${theme === 'dark' ? 'swap-active' : ''}`} onClick={handleToggle}>
                     {/* this hidden checkbox controls the state */}
                     <input type="checkbox" className="theme-controller" value="dark" />
                     {/* sun icon */}
