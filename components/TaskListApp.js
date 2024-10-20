@@ -1,20 +1,24 @@
 'use client'
-import React from 'react'
-import Navbar from './Navbar'
-import Footer from './Footer'
-import { SearchProvider } from '@/context/SearchContext'
+import { SearchProvider } from '@/context/SearchContext';
+import dynamic from 'next/dynamic';
+import Footer from './Footer';
 
-const TaskListApp = ({children}) => {
+// Dynamically import the ThemeSwitcher component
+const Navbar = dynamic(() => import('./Navbar'), {
+  ssr: false, // Disable server-side rendering for this component
+});
+
+const TaskListApp = ({ children }) => {
   return (
     <>
-        <SearchProvider>
-        <Navbar/>
+      <SearchProvider>
+        <Navbar />
         {/* className="container mx-auto pt-16 min-h-screen"  */}
         <main className="pt-16">
-            {children}
+          {children}
         </main>
-        <Footer/>
-        </SearchProvider>
+        <Footer />
+      </SearchProvider>
     </>
   )
 }
