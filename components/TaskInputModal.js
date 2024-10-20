@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import AutoResizeTextArea from './AutoResizeTextArea';
 
 const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, taskStatus, handleEditTask }) => {
-    const innerTaskId = taskId ? taskId : new Date().getTime();
     const innerTaskStatus = taskStatus ? taskStatus : 'pending';
 
     const [editedTask, setEditedTask] = useState({
-        id: innerTaskId,
+        id: taskId,
         title: taskTitle || "",
         details: taskDetails || "",
         tags: taskTags || [],
@@ -15,7 +14,7 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
 
     useEffect(() => {
         setEditedTask({
-            id: innerTaskId,
+            id: taskId,
             title: taskTitle || "",
             details: taskDetails || "",
             tags: taskTags || [],
@@ -24,7 +23,7 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
     }, [taskId, taskTitle, taskDetails, taskTags, taskStatus]);
 
     const closeModal = () => {
-        document.getElementById(innerTaskId).close();
+        document.getElementById(taskId).close();
     };
 
     const handleKeyDown = (e) => {
@@ -60,8 +59,8 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
 
     return (
         <>
-            <button className="btn btn-glass btn-sm btn-outline" onClick={() => document.getElementById(innerTaskId).showModal()}>{btnTxt}</button>
-            <dialog id={innerTaskId} className="modal">
+            <button className="btn btn-glass btn-sm btn-outline" onClick={() => document.getElementById(taskId).showModal()}>{btnTxt}</button>
+            <dialog id={taskId} className="modal">
                 <div className="modal-box">
                     <form method="dialog">
                         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>

@@ -10,6 +10,7 @@ const Home = () => {
   const [tasks, setTasks] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
+  const [newTaskId, setNewTaskId] = useState(null);
 
   const sortTasks = (tasks) => {
     sortTasks.sort((a, b) => b.latestUpdateTime - a.latestUpdateTime);
@@ -19,6 +20,8 @@ const Home = () => {
     // Load tasks from localStorage on component mount
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     setTasks(storedTasks);
+
+    setNewTaskId(new Date().getTime());
   }, []);
 
   // Function to update tasks in state and local storage
@@ -36,6 +39,8 @@ const Home = () => {
     const unaffectedTasks = tasks.filter(task => task.id !== editOrNewTask.id);
     editOrNewTask = { ...editOrNewTask, latestUpdateTime: new Date().getTime() }
     updateTasks([...unaffectedTasks, editOrNewTask]);
+    // Update a new testID here in case a new task is added
+    setNewTaskId(new Date().getTime());
   }
 
 
@@ -107,7 +112,7 @@ const Home = () => {
       {/* Task list */}
       <div className='flex items-center justify-center flex-wrap min-w-[18rem] max-w-4xl gap-2 p-4 mx-auto'>
         <div className='ml-auto sticky top-2 right-0 z-10'>
-          <TaskInputModal taskId={new Date().getTime()} btnTxt={'NEW TASK'} handleEditTask={handleEditOrNewTask} />
+          <TaskInputModal taskId={newTaskId} btnTxt={'NEW TASK'} handleEditTask={handleEditOrNewTask} />
         </div>
         {filteredTasks.map((task, index) => (
           <Task
