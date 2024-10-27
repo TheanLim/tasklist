@@ -42,7 +42,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
   return (
     <div
       className='collapse collapse-plus bg-base-200 text-base-content'
-      // onDoubleClick={toggleComplete}
+      onDoubleClick={() => document.getElementById(taskId).showModal()}
       onKeyDown={handleKeyDown}
     >
       <input type="radio" name="my-accordion-3" defaultChecked={isOpen} />
