@@ -14,6 +14,23 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
     });
   };
 
+  const toggleDotTag = () => {
+    // Check if the "." tag is already in taskTags
+    if (!taskTags.includes(".")) {
+      taskTags.push(".");
+    } else {
+      // Remove existing "." tag if it's already in taskTags
+      taskTags = taskTags.filter(tag => tag !== ".");
+    }
+    handleEditTask({
+      id: taskId,
+      title: taskTitle,
+      details: taskDetails,
+      tags: taskTags,
+      status: taskStatus
+    }, true);
+  }
+
   const handleHotKey = (e) => {
     if (document.getElementById(taskId).open) return;
     if (e.key === 'r') {
@@ -40,15 +57,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
       handleDelete([taskId])
     }
     if (e.key === 'g') {
-      // Adding "." tag to the task
-      taskTags.push(".");
-      handleEditTask({
-        id: taskId,
-        title: taskTitle,
-        details: taskDetails,
-        tags: taskTags,
-        status: taskStatus
-      }, true);
+      toggleDotTag();
     }
   };
 
