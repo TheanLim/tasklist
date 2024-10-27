@@ -36,6 +36,7 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
     const handleKeyDown = (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
             handleSubmit(e);
+            e.stopPropagation(); // prevent propagate hotkey "Enter" to reopen the modal
             closeModal();
         }
     };

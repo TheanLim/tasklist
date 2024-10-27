@@ -30,7 +30,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
       // complete a task
       toggleComplete();
     }
-    if (e.key === 'e') {
+    if (e.key === 'e' || e.key === 'Enter') {
       // edit a task
       e.preventDefault();
       document.getElementById(taskId).click();
