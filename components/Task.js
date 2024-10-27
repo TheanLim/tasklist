@@ -39,6 +39,17 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
       // delete a task
       handleDelete([taskId])
     }
+    if (e.key === 'g') {
+      // Adding "." tag to the task
+      taskTags.push(".");
+      handleEditTask({
+        id: taskId,
+        title: taskTitle,
+        details: taskDetails,
+        tags: taskTags,
+        status: taskStatus
+      }, true);
+    }
   };
 
   return (

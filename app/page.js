@@ -13,9 +13,14 @@ const Home = () => {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [newTaskId, setNewTaskId] = useState(null);
 
-  const [ConfirmDialog, confirm] = useConfirm(
+  const [ConfirmDialogDeleteTask, confirmDeleteTask] = useConfirm(
     "Delete this task?",
     "You are about to delete this task. This action is irreversible",
+  );
+
+  const [ConfirmDialogDeleteTag, confirmDeleteTag] = useConfirm(
+    "Delete this tag?",
+    "You are about to remove this tag from every task. This action is irreversible",
   );
 
   const sortTasks = (tasks) => {
@@ -37,20 +42,47 @@ const Home = () => {
   };
 
   const deleteTasks = async (taskIds) => {
-    const ok = await confirm();
+    const ok = await confirmDeleteTask();
     if (!ok) return;
 
     const updatedTasks = tasks.filter(task => !taskIds.includes(task.id));
     updateTasks(updatedTasks);
   };
 
-  const handleEditOrNewTask = (editOrNewTask) => {
+  const handleEditOrNewTask = (editOrNewTask, maintainPosition) => {
+    const taskIndex = tasks.findIndex(task => task.id === editOrNewTask.id);
     const unaffectedTasks = tasks.filter(task => task.id !== editOrNewTask.id);
-    editOrNewTask = { ...editOrNewTask, latestUpdateTime: new Date().getTime() }
-    updateTasks([...unaffectedTasks, editOrNewTask]);
-    // Update a new testID here in case a new task is added
+
+    editOrNewTask = removeDuplicateTags(editOrNewTask);
+    editOrNewTask = { ...editOrNewTask, latestUpdateTime: new Date().getTime() };
+
+    // Put task back to where it was if maintainPosition
+    // else append to the end
+    const updatedTasks = maintainPosition && taskIndex !== -1
+      ? [...unaffectedTasks.slice(0, taskIndex), editOrNewTask, ...unaffectedTasks.slice(taskIndex)]
+      : [...unaffectedTasks, editOrNewTask];
+
+    updateTasks(updatedTasks);
     setNewTaskId(new Date().getTime());
-  }
+  };
+
+  const removeDuplicateTags = (task) => {
+    if (task.tags && Array.isArray(task.tags)) {
+      task.tags = [...new Set(task.tags)];
+    }
+    return task;
+  };
+
+  const handleRemoveTag = async (tagToRemove) => {
+    const ok = await confirmDeleteTag()
+    if (!ok) return;
+
+    const updatedTasks = tasks.map(task => ({
+      ...task,
+      tags: task.tags ? task.tags.filter(tag => tag !== tagToRemove) : []
+    }));
+    updateTasks(updatedTasks);
+  };
 
 
   ///// FILTER TASKS ///////
@@ -80,10 +112,17 @@ const Home = () => {
 
   return (
     <div className='mx-10 my-10'>
-      <ConfirmDialog />
+      <ConfirmDialogDeleteTask />
+      <ConfirmDialogDeleteTag />
       {/* Tag buttons */}
       <div className='flex gap-1 m-2'>
-        <button className={`btn ${selectedTag === null ? 'btn-primary' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedTag(null)}>All</button>
+        <button
+          className={`btn ${selectedTag === null ? 'btn-primary' : 'btn-ghost'} btn-sm`}
+          onClick={() => setSelectedTag(null)}
+        >
+          All
+        </button>
+
         {Object.entries(
           searchedTasks
             .filter(task => task.tags && task.tags.length > 0)
@@ -95,13 +134,25 @@ const Home = () => {
         )
           .sort((a, b) => b[1] - a[1]) // Sort by tag count in descending order
           .map(([tag, count]) => (
-            <button
-              key={tag}
-              className={`btn ${selectedTag === tag ? 'btn-primary' : 'btn-ghost'} btn-sm`}
-              onClick={() => setSelectedTag(tag)}
-            >
-              {tag} ({count})
-            </button>
+            <div key={tag} className="relative group">
+              <button
+                className={`btn ${selectedTag === tag ? 'btn-primary' : 'btn-ghost'} btn-sm`}
+                onClick={() => setSelectedTag(tag)}
+              >
+                {tag} ({count})
+              </button>
+
+              {/* Cross button for removing tag */}
+              <button
+                className="absolute top-0 right-0 -mt-2 -mr-2 hidden group-hover:inline-block btn btn-xs btn-circle"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering tag selection
+                  handleRemoveTag(tag);
+                }}
+              >
+                ✕
+              </button>
+            </div>
           ))
         }
       </div>
