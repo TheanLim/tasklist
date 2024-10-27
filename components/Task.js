@@ -1,6 +1,8 @@
 import Markdown from 'markdown-to-jsx'; // Importing markdown-to-jsx
 import TaskInputModal from './TaskInputModal';
 
+const DOT_TAG = ".";
+
 const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTag, handleDelete, handleClickTag, handleEditTask, isOpen }) => {
 
   const toggleComplete = () => {
@@ -15,12 +17,12 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
   };
 
   const toggleDotTag = () => {
-    // Check if the "." tag is already in taskTags
-    if (!taskTags.includes(".")) {
-      taskTags.push(".");
+    // Check if the DOT_TAG is already in taskTags
+    if (!taskTags.includes(DOT_TAG)) {
+      taskTags.push(DOT_TAG);
     } else {
-      // Remove existing "." tag if it's already in taskTags
-      taskTags = taskTags.filter(tag => tag !== ".");
+      // Remove existing DOT_TAG if it's already in taskTags
+      taskTags = taskTags.filter(tag => tag !== DOT_TAG);
     }
     handleEditTask({
       id: taskId,
@@ -67,7 +69,16 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
       onDoubleClick={() => document.getElementById(taskId).click()}
       onKeyDown={handleHotKey}
     >
-      <input type="radio" name="my-accordion-3" defaultChecked={isOpen} />
+      <input
+        type="radio"
+        name="my-accordion-3"
+        defaultChecked={isOpen}
+        onClick={() => {
+          if (taskTags.includes(DOT_TAG)) {
+            handleClickTag(selectedTag === DOT_TAG ? null : DOT_TAG)
+          }
+        }}
+      />
       <div className={`flex gap-x-3 collapse-title text-xl font-medium font-mono ${taskStatus === 'completed' ? 'line-through' : ''}`}>
         {taskTags.includes(".") && <button className='btn btn-xs btn-circle btn-info' />}
         {taskTitle}
