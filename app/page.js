@@ -6,6 +6,8 @@ import TaskInputModal from '../components/TaskInputModal';
 import useConfirm from '../components/UseConfirm';
 import search from './search';
 
+const DOT_TAG = ".";
+
 const Home = () => {
   const { searchQuery } = useContext(SearchContext);
   const [tasks, setTasks] = useState([]);
@@ -107,6 +109,11 @@ const Home = () => {
     ? filteredTasks.filter(task => task.status === selectedStatus)
     : filteredTasks;
   ///// END FILTER TASKS ///////
+
+  // Reverse array for DOT_TAG tasks
+  if (selectedTag === DOT_TAG) {
+    filteredTasks.reverse();
+  }
 
 
 
