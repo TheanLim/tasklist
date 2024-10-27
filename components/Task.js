@@ -14,7 +14,8 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
     });
   };
 
-  const handleKeyDown = (e) => {
+  const handleHotKey = (e) => {
+    if (document.getElementById(taskId).open) return;
     if (e.key === 'r') {
       // Simply refresh and move it down
       handleEditTask({
@@ -43,7 +44,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
     <div
       className='collapse collapse-plus bg-base-200 text-base-content'
       onDoubleClick={() => document.getElementById(taskId).showModal()}
-      onKeyDown={handleKeyDown}
+      onKeyDown={handleHotKey}
     >
       <input type="radio" name="my-accordion-3" defaultChecked={isOpen} />
       <div className={`collapse-title text-xl font-medium font-mono ${taskStatus === 'completed' ? 'line-through' : ''}`}>
