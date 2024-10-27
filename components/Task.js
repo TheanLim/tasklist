@@ -69,16 +69,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
       onDoubleClick={() => document.getElementById(taskId).click()}
       onKeyDown={handleHotKey}
     >
-      <input
-        type="radio"
-        name="my-accordion-3"
-        defaultChecked={isOpen}
-        onClick={() => {
-          if (taskTags.includes(DOT_TAG)) {
-            handleClickTag(selectedTag === DOT_TAG ? null : DOT_TAG)
-          }
-        }}
-      />
+      <input type="radio" name="my-accordion-3" defaultChecked={isOpen} />
       <div className={`flex gap-x-3 collapse-title text-xl font-medium font-mono ${taskStatus === 'completed' ? 'line-through' : ''}`}>
         {taskTags.includes(".") && <button className='btn btn-xs btn-circle btn-info' />}
         {taskTitle}
