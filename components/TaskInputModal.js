@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AutoResizeTextArea from './AutoResizeTextArea';
 
 const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, taskStatus, handleEditTask }) => {
+    const firstTextAreaRef = useRef(null);
+
     const innerTaskStatus = taskStatus ? taskStatus : 'pending';
 
     const [editedTask, setEditedTask] = useState({
@@ -21,6 +23,11 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
             status: innerTaskStatus
         });
     }, [taskId, taskTitle, taskDetails, taskTags, taskStatus]);
+
+    const openModal = () => {
+        document.getElementById(taskId).showModal();
+        firstTextAreaRef.current.focus();
+    }
 
     const closeModal = () => {
         document.getElementById(taskId).close();
@@ -59,8 +66,18 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
 
     return (
         <>
-            <button className="btn btn-glass btn-sm btn-outline" onClick={() => document.getElementById(taskId).showModal()}>{btnTxt}</button>
-            <dialog id={taskId} className="modal">
+            <button className="btn btn-glass btn-sm btn-outline" onClick={openModal}>{btnTxt}</button>
+            <dialog
+                id={taskId}
+                className="modal"
+                onClick={(e) => {
+                    // Trigger only if the click is directly on the dialog background
+                    // Prevent clicking this when click in the Text/Input Areas
+                    if (e.target === e.currentTarget) {
+                        openModal();
+                    }
+                }}
+            >
                 <div className="modal-box">
                     <form method="dialog">
                         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -69,6 +86,7 @@ const TaskInputModal = ({ btnTxt, taskId, taskTitle, taskDetails, taskTags, task
                     <div className="modal-action">
                         <form method="dialog" className='space' onSubmit={handleSubmit}>
                             <AutoResizeTextArea
+                                ref={firstTextAreaRef}
                                 value={editedTask.title}
                                 onChange={(e) => setEditedTask({ ...editedTask, title: e.target.value })}
                                 placeholder='Task title'

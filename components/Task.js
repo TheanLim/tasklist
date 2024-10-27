@@ -32,7 +32,8 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
     }
     if (e.key === 'e') {
       // edit a task
-      document.getElementById(taskId).showModal()
+      e.preventDefault();
+      document.getElementById(taskId).click();
     }
     if (e.key === 'd') {
       // delete a task
@@ -43,7 +44,7 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
   return (
     <div
       className='collapse collapse-plus bg-base-200 text-base-content'
-      onDoubleClick={() => document.getElementById(taskId).showModal()}
+      onDoubleClick={() => document.getElementById(taskId).click()}
       onKeyDown={handleHotKey}
     >
       <input type="radio" name="my-accordion-3" defaultChecked={isOpen} />

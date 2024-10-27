@@ -1,30 +1,44 @@
-import { useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 
-const AutoResizeTextArea = ({ value, onChange, placeholder, onKeyDown, maxHeight }) => {
+const AutoResizeTextArea = forwardRef(({ value, onChange, placeholder, onKeyDown, maxHeight }, ref) => {
     const textareaRef = useRef(null);
 
     const adjustHeight = () => {
         if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto'; // Reset height to auto to calculate the new height
-            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, maxHeight)}px`; // Set height based on content or maxHeight
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, maxHeight)}px`;
         }
     };
 
     useEffect(() => {
-        adjustHeight(); // Adjust height on value change
+        adjustHeight();
     }, [value]);
+
+    useEffect(() => {
+        if (ref) {
+            ref.current = textareaRef.current;
+        }
+    }, [ref]);
+
+    const handleFocus = () => {
+        if (textareaRef.current) {
+            const length = textareaRef.current.value.length;
+            textareaRef.current.setSelectionRange(length, length); // Move cursor to the end
+        }
+    };
 
     return (
         <textarea
             ref={textareaRef}
             value={value}
             onChange={onChange}
+            onFocus={handleFocus}
             placeholder={placeholder}
             onKeyDown={onKeyDown}
-            className="textarea textarea-sm textarea-bordered w-full resize-y" // Allow vertical resizing
+            className="textarea textarea-sm textarea-bordered w-full resize-y"
             style={{ overflow: 'auto' }}
         />
     );
-};
+});
 
 export default AutoResizeTextArea;
