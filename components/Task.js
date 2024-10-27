@@ -68,7 +68,8 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
       onKeyDown={handleHotKey}
     >
       <input type="radio" name="my-accordion-3" defaultChecked={isOpen} />
-      <div className={`collapse-title text-xl font-medium font-mono ${taskStatus === 'completed' ? 'line-through' : ''}`}>
+      <div className={`flex gap-x-3 collapse-title text-xl font-medium font-mono ${taskStatus === 'completed' ? 'line-through' : ''}`}>
+        {taskTags.includes(".") && <button className='btn btn-xs btn-circle btn-info' />}
         {taskTitle}
       </div>
       <div className="collapse-content">
