@@ -3,6 +3,7 @@ import { SearchContext } from '@/context/SearchContext';
 import { useContext, useEffect, useState } from 'react';
 import Task from '../components/Task';
 import TaskInputModal from '../components/TaskInputModal';
+import useConfirm from '../components/UseConfirm';
 import search from './search';
 
 const Home = () => {
@@ -11,6 +12,11 @@ const Home = () => {
   const [selectedTag, setSelectedTag] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [newTaskId, setNewTaskId] = useState(null);
+
+  const [ConfirmDialog, confirm] = useConfirm(
+    "Delete this task?",
+    "You are about to delete this task. This action is irreversible",
+  );
 
   const sortTasks = (tasks) => {
     sortTasks.sort((a, b) => b.latestUpdateTime - a.latestUpdateTime);
@@ -30,7 +36,10 @@ const Home = () => {
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   };
 
-  const deleteTasks = taskIds => {
+  const deleteTasks = async (taskIds) => {
+    const ok = await confirm();
+    if (!ok) return;
+
     const updatedTasks = tasks.filter(task => !taskIds.includes(task.id));
     updateTasks(updatedTasks);
   };
@@ -70,6 +79,7 @@ const Home = () => {
 
   return (
     <div className='mx-10 my-10'>
+      <ConfirmDialog />
       {/* Tag buttons */}
       <div className='flex gap-1 m-2'>
         <button className={`btn ${selectedTag === null ? 'btn-primary' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedTag(null)}>All</button>

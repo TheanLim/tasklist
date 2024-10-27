@@ -3,7 +3,7 @@ import TaskInputModal from './TaskInputModal';
 
 const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTag, handleDelete, handleClickTag, handleEditTask, isOpen }) => {
 
-  const toggleStrikethrough = () => {
+  const toggleComplete = () => {
     const newStatus = taskStatus === 'pending' ? 'completed' : 'pending';
     handleEditTask({
       id: taskId,
@@ -27,14 +27,22 @@ const Task = ({ taskId, taskTitle, taskDetails, taskTags, taskStatus, selectedTa
     }
     if (e.key === 'c') {
       // complete a task
-      toggleStrikethrough();
+      toggleComplete();
+    }
+    if (e.key === 'e') {
+      // edit a task
+      document.getElementById(taskId).showModal()
+    }
+    if (e.key === 'd') {
+      // delete a task
+      handleDelete([taskId])
     }
   };
 
   return (
     <div
       className='collapse collapse-plus bg-base-200 text-base-content'
-      onDoubleClick={toggleStrikethrough}
+      // onDoubleClick={toggleComplete}
       onKeyDown={handleKeyDown}
     >
       <input type="radio" name="my-accordion-3" defaultChecked={isOpen} />
