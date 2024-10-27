@@ -46,6 +46,8 @@ const useConfirm = (title, message) => {
             } else if (document.activeElement === cancelButtonRef.current) {
                 handleCancel();
             }
+        } else if (event.key === 'Escape') {
+            handleCancel();
         }
     };
 
