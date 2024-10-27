@@ -54,15 +54,16 @@ const Home = () => {
 
 
   ///// FILTER TASKS ///////
+  // Filter tasks using task title/details/tags based on the searchQuery
+  let searchedTasks = tasks;
+  if (searchQuery !== "") {
+    searchedTasks = search(searchQuery, tasks);
+  }
+
   // Function to filter tasks based on selected tag
   let filteredTasks = selectedTag
-    ? tasks.filter(task => task.tags?.includes(selectedTag))
-    : tasks;
-
-  // Filter tasks using task title/details/tags based on the searchQuery
-  if (searchQuery !== "") {
-    filteredTasks = search(searchQuery, filteredTasks);
-  }
+    ? searchedTasks.filter(task => task.tags?.includes(selectedTag))
+    : searchedTasks;
 
   // Calculate the counts for each status
   const totalCount = filteredTasks.length;
@@ -84,7 +85,7 @@ const Home = () => {
       <div className='flex gap-1 m-2'>
         <button className={`btn ${selectedTag === null ? 'btn-primary' : 'btn-ghost'} btn-sm`} onClick={() => setSelectedTag(null)}>All</button>
         {Object.entries(
-          filteredTasks
+          searchedTasks
             .filter(task => task.tags && task.tags.length > 0)
             .flatMap(task => task.tags)
             .reduce((tagCounts, tag) => {
